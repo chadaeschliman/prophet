@@ -1120,6 +1120,10 @@ class Prophet(object):
         self.set_changepoints()
 
         trend_indicator = {'linear': 0, 'logistic': 1, 'flat': 2}
+        if 'w' in history:
+            sample_weights = history['w']
+        else:
+            sample_weights = [1.0]*len(history['t'])
 
         dat = {
             'T': history.shape[0],
@@ -1127,6 +1131,7 @@ class Prophet(object):
             'S': len(self.changepoints_t),
             'y': history['y_scaled'],
             't': history['t'],
+            'w': sample_weights,
             't_change': self.changepoints_t,
             'X': seasonal_features,
             'sigmas': prior_scales,
