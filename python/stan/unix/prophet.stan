@@ -90,7 +90,7 @@ data {
   vector[T] t;          // Time
   vector[T] cap;        // Capacities for logistic trend
   vector[T] y;          // Time series
-  vector[T] w;          // Sample weights
+  vector[T] inv_w;      // Inverse sample weights
   int S;                // Number of changepoints
   vector[S] t_change;   // Times of trend changepoints
   matrix[T,K] X;        // Regressors
@@ -138,6 +138,6 @@ model {
   trend
   .* (1 + X * (beta .* s_m))
   + X * (beta .* s_a),
-  sigma_obs / w
+  sigma_obs * inv_w
   );
 }
